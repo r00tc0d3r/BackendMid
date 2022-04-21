@@ -1,16 +1,32 @@
-const http = require("http");
-const { env, port } = require("./config");
+const express = require("express");
+const { port } = require("./config");
 
-const server = http.createServer();
-server.on("request", (request, response) => {
-  if (request.method === "POST" && request.url === "/datos") {
-    // TODO: Regresar al momento de ver streams
-  }
+const users = [];
 
-  response.statusCode = "200";
-  response.end("Hola Mundo");
+const app = express();
+
+app.get("/", (req, res) => {
+  return res.json({ hola: "mundo" });
 });
 
-server.listen(port);
-console.log("Servidor funcionando en http://localhost:" + port);
-console.log(env);
+app.post("/", (req, res) => {
+  const user = req.body;
+  users.push(user);
+  return res.json(users);
+});
+
+app.put("/:id", (req, res) => {
+  const id = req.params.id;
+
+  return res.json(users);
+});
+
+app.delete("/:id", (req, res) => {
+  const id = req.params.id;
+  users = users.filter((user) => id !== user.id);
+  return res.json(users);
+});
+
+app.listen(port, () => {
+  console.log(`Listening on http://localhost:${port}`);
+});
