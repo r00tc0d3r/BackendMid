@@ -1,23 +1,51 @@
 const express = require("express");
 const { port } = require("./config");
 
-const users = [];
+let users = [];
 
 const app = express();
-
+app.use(express.json());
 app.get("/", (req, res) => {
-  return res.json({ hola: "mundo" });
+  return res.json(users);
 });
 
 app.post("/", (req, res) => {
   const user = req.body;
   users.push(user);
-  return res.json(users);
+  return res.status(201).json(users);
 });
 
 app.put("/:id", (req, res) => {
-  const id = req.params.id;
+  // const id = req.params.id;
+  // const body = req.body
+  const {
+    body,
+    params: { id },
+  } = req;
+  // users.map((user) => {
+  //   if (user.id === id) {
+  //     return body
+  //   }
+  //   return user
+  // });
+  users = users.map((user) => (user.id == id ? body : user));
+  return res.json(users);
+});
 
+app.patch("/:id", (req, res) => {
+  // const id = req.params.id;
+  // const body = req.body
+  const {
+    body,
+    params: { id },
+  } = req;
+  // users.map((user) => {
+  //   if (user.id === id) {
+  //     return body
+  //   }
+  //   return user
+  // });
+  users = users.map((user) => (user.id == id ? body : user));
   return res.json(users);
 });
 
