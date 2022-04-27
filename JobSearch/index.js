@@ -1,6 +1,8 @@
 const express = require("express");
 const { port } = require("./config");
+const { dbConnection } = require("./config/db");
 
+dbConnection();
 const app = express();
 
 app.use(express.json());
