@@ -1,21 +1,28 @@
 const express = require("express");
+const UserService = require("../services/users");
 
 function users(app) {
   const router = express.Router();
+  const userServ = new UserService();
 
-  app.use(router);
   app.use("/api/users", router);
 
-  router.get("/", (req, res) => {
-    return res.json({ hola: "mundo" });
+  router.get("/", async (req, res) => {
+    const users = await userServ.getAll();
+    return res.json(users);
   });
 
-  router.post("/", (req, res) => {
-    return res.json({ hola: "mundo" });
+  router.post("/", async (req, res) => {
+    const user = await userServ.create(req.body);
+    return res.json(user);
   });
-
-  router.put("/", (req, res) => {
-    return res.json({ hola: "mundo" });
+  router.put("/:id", async (req, res) => {
+    const user = await userServ.update(req.params.id, req.body);
+    return res.json(user);
+  });
+  router.delete("/:id", async (req, res) => {
+    const user = await userServ.delete(req.params.id);
+    return res.json(user);
   });
 }
 
