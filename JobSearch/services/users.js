@@ -16,7 +16,13 @@ class Users {
       const user = await UserModel.create(data);
       return user; // Objeto
     } catch (err) {
-      console.log(err);
+      if (err.code === 11000) {
+        const message = `El ${err.keyValue.email} ya esta en uso`;
+        return {
+          error: true,
+          message,
+        };
+      }
     }
   }
 
