@@ -10,6 +10,10 @@ const userSchema = new Schema({
     unique: true,
   },
   password: String,
+  role: {
+    type: String,
+    enum: ["Postulante", "Empleador", "Admin"],
+  },
 });
 
 const UserModel = mongoose.model("User", userSchema);
